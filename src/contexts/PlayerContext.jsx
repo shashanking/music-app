@@ -3,7 +3,11 @@ import { createContext, useContext, useRef, useState, useCallback, useEffect } f
 const PlayerContext = createContext(null);
 
 export function PlayerProvider({ children }) {
-  const audioRef = useRef(new Audio());
+  const audioRef = useRef((() => {
+    const a = new Audio();
+    a.crossOrigin = 'anonymous';
+    return a;
+  })());
   const [queue, setQueue] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(-1);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -30,12 +34,17 @@ export function PlayerProvider({ children }) {
         nextTrack();
       }
     };
+    const onError = () => {
+      console.warn('Audio playback error, skipping...');
+      setTimeout(() => nextTrack(), 1000);
+    };
 
     audio.addEventListener('timeupdate', onTimeUpdate);
     audio.addEventListener('durationchange', onDurationChange);
     audio.addEventListener('play', onPlay);
     audio.addEventListener('pause', onPause);
     audio.addEventListener('ended', onEnded);
+    audio.addEventListener('error', onError);
 
     return () => {
       audio.removeEventListener('timeupdate', onTimeUpdate);
@@ -43,10 +52,12 @@ export function PlayerProvider({ children }) {
       audio.removeEventListener('play', onPlay);
       audio.removeEventListener('pause', onPause);
       audio.removeEventListener('ended', onEnded);
+      audio.removeEventListener('error', onError);
     };
   }, [repeat, queue, currentIndex]);
 
   const loadAndPlay = useCallback((song) => {
+    if (!song?.audioUrl) return;
     const audio = audioRef.current;
     audio.pause();
     audio.src = song.audioUrl;
@@ -54,7 +65,7 @@ export function PlayerProvider({ children }) {
     audio.load();
     setPosition(0);
     setDuration(0);
-    audio.play().catch(e => console.warn('Play error:', e));
+    audio.play().catch(() => {});
   }, [volume]);
 
   const playSong = useCallback((song, songQueue) => {
@@ -107,7 +118,7 @@ export function PlayerProvider({ children }) {
   const toggleRepeat = useCallback(() => setRepeat(r => !r), []);
 
   const value = {
-    queue, currentSong, currentIndex, isPlaying, position, duration,
+    audioRef, queue, currentSong, currentIndex, isPlaying, position, duration,
     volume, shuffle, repeat,
     playSong, togglePlayPause, seek, nextTrack, prevTrack,
     changeVolume, toggleShuffle, toggleRepeat, setQueue,

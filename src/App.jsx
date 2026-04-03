@@ -1,17 +1,24 @@
 import { useState } from 'react';
 import { PlayerProvider } from './contexts/PlayerContext';
 import { PlaylistProvider } from './contexts/PlaylistContext';
+import { ToastProvider } from './contexts/ToastContext';
 import { useMusicApi } from './hooks/useMusicApi';
 import PlayerBar from './components/PlayerBar';
 import NowPlaying from './components/NowPlaying';
+import Visualizer from './components/Visualizer';
 import HomePage from './pages/HomePage';
 import SearchPage from './pages/SearchPage';
 import PlaylistPage from './pages/PlaylistPage';
+import GuessGamePage from './pages/GuessGamePage';
+import MoodPage from './pages/MoodPage';
 
 const TABS = [
   { id: 'home', label: 'Home', icon: '🏠' },
   { id: 'search', label: 'Search', icon: '🔍' },
-  { id: 'playlists', label: 'Playlists', icon: '🎵' },
+  { id: 'mood', label: 'Mood', icon: '🎭' },
+  { id: 'playlists', label: 'Library', icon: '📚' },
+  { id: 'game', label: 'Game', icon: '🎮' },
+  { id: 'visualizer', label: 'Visual', icon: '🎨' },
 ];
 
 function AppContent() {
@@ -40,10 +47,13 @@ function AppContent() {
           />
         )}
         {tab === 'playlists' && <PlaylistPage />}
+        {tab === 'mood' && <MoodPage allSongs={musicApi.allSongs} />}
+        {tab === 'game' && <GuessGamePage allSongs={musicApi.allSongs} />}
+        {tab === 'visualizer' && <Visualizer />}
       </div>
 
       {/* Player bar */}
-      <PlayerBar onExpand={() => setShowNowPlaying(true)} />
+      {tab !== 'visualizer' && <PlayerBar onExpand={() => setShowNowPlaying(true)} />}
 
       {/* Bottom nav */}
       <nav className="bottom-nav" style={{
@@ -56,12 +66,12 @@ function AppContent() {
             onClick={() => setTab(t.id)}
             style={{
               flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center',
-              padding: '10px 0 8px', gap: 2, transition: 'color 0.2s',
+              padding: '8px 0 6px', gap: 1, transition: 'color 0.2s',
               color: tab === t.id ? 'var(--primary)' : 'var(--text-secondary)',
             }}
           >
-            <span style={{ fontSize: 20 }}>{t.icon}</span>
-            <span style={{ fontSize: 11, fontWeight: tab === t.id ? 600 : 400 }}>{t.label}</span>
+            <span style={{ fontSize: 18 }}>{t.icon}</span>
+            <span style={{ fontSize: 10, fontWeight: tab === t.id ? 600 : 400 }}>{t.label}</span>
           </button>
         ))}
       </nav>
@@ -76,7 +86,9 @@ export default function App() {
   return (
     <PlayerProvider>
       <PlaylistProvider>
-        <AppContent />
+        <ToastProvider>
+          <AppContent />
+        </ToastProvider>
       </PlaylistProvider>
     </PlayerProvider>
   );

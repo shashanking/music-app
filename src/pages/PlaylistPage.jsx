@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import { usePlayer } from '../contexts/PlayerContext';
 import { usePlaylists } from '../contexts/PlaylistContext';
+import { useToast } from '../contexts/ToastContext';
 import SongTile from '../components/SongTile';
 
 export default function PlaylistPage() {
   const { playlists, createPlaylist, deletePlaylist, removeSongFromPlaylist } = usePlaylists();
   const { playSong } = usePlayer();
+  const { showToast } = useToast();
   const [expanded, setExpanded] = useState({});
   const [showCreate, setShowCreate] = useState(false);
   const [newName, setNewName] = useState('');
@@ -15,8 +17,11 @@ export default function PlaylistPage() {
   const handleCreate = () => {
     if (newName.trim()) {
       createPlaylist(newName.trim());
+      showToast(`Created "${newName.trim()}"`, 'playlist');
       setNewName('');
       setShowCreate(false);
+    } else {
+      showToast('Enter a playlist name', 'warning');
     }
   };
 
@@ -88,7 +93,7 @@ export default function PlaylistPage() {
               <button onClick={() => toggle(pl.id)} style={{ fontSize: 20, color: 'var(--text-secondary)', padding: 8 }}>
                 {expanded[pl.id] ? '▲' : '▼'}
               </button>
-              <button onClick={() => deletePlaylist(pl.id)} style={{ fontSize: 16, color: '#e74c3c', padding: 8 }}>
+              <button onClick={() => { deletePlaylist(pl.id); showToast(`Deleted "${pl.name}"`, 'error'); }} style={{ fontSize: 16, color: '#e74c3c', padding: 8 }}>
                 🗑
               </button>
             </div>
@@ -103,7 +108,7 @@ export default function PlaylistPage() {
                   <div key={song.id} style={{ position: 'relative' }}>
                     <SongTile song={song} queue={pl.songs} index={i} showIndex />
                     <button
-                      onClick={() => removeSongFromPlaylist(pl.id, song.id)}
+                      onClick={() => { removeSongFromPlaylist(pl.id, song.id); showToast('Removed from playlist', 'info', 2000); }}
                       style={{
                         position: 'absolute', right: 50, top: '50%', transform: 'translateY(-50%)',
                         fontSize: 12, color: '#e74c3c', padding: '4px 8px', background: 'rgba(231,76,60,0.1)', borderRadius: 4,
