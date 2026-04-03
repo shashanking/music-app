@@ -1,11 +1,23 @@
-import { createContext, useContext, useState, useCallback } from 'react';
+import { createContext, useContext, useState, useCallback, useEffect } from 'react';
 
 const PlaylistContext = createContext(null);
+const STORAGE_KEY = 'playlists_v1';
+
+const loadPlaylists = () => {
+  try {
+    const stored = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    if (Array.isArray(stored) && stored.length) return stored;
+  } catch {}
+  return [{ id: 'favorites', name: 'Favorites', songs: [] }];
+};
 
 export function PlaylistProvider({ children }) {
-  const [playlists, setPlaylists] = useState([
-    { id: 'favorites', name: 'Favorites', songs: [] },
-  ]);
+  const [playlists, setPlaylists] = useState(loadPlaylists);
+
+  // Persist on every change
+  useEffect(() => {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(playlists)); } catch {}
+  }, [playlists]);
 
   const createPlaylist = useCallback((name) => {
     const pl = { id: Date.now().toString(), name, songs: [] };

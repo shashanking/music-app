@@ -2,9 +2,10 @@ import { useState } from 'react';
 import SongTile from '../components/SongTile';
 
 const CHIPS = [
-  'Arijit Singh', 'Atif Aslam', 'Shreya Ghoshal', 'AR Rahman', 'Pritam',
-  'Neha Kakkar', 'Taylor Swift', 'Ed Sheeran', 'The Weeknd', 'Adele',
-  'Lata Mangeshkar', 'Kishore Kumar', 'Drake', 'Dua Lipa',
+  'Arijit Singh', 'AP Dhillon', 'BTS', 'Diljit Dosanjh', 'Bad Bunny',
+  'Taylor Swift', 'Ed Sheeran', 'The Weeknd', 'Eminem', 'Drake',
+  'Blackpink', 'Shakira', 'AR Rahman', 'Burna Boy', 'Alan Walker',
+  'Kendrick Lamar', 'Lata Mangeshkar', 'Dua Lipa', 'NewJeans', 'Wizkid',
 ];
 
 export default function SearchPage({ searchResults, searching, searchSongs }) {

@@ -9,6 +9,7 @@
   --text-primary: #FFFFFF;
   --text-secondary: #B3B3B3;
   --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-top: env(safe-area-inset-top, 0px);
 }
 
 html, body, #root {
@@ -20,18 +21,32 @@ html, body, #root {
   font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
   -webkit-tap-highlight-color: transparent;
   -webkit-font-smoothing: antialiased;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 /* Scrollbar */
-::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar { width: 4px; height: 0; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--surface-light); border-radius: 3px; }
+::-webkit-scrollbar-thumb { background: var(--surface-light); border-radius: 2px; }
 
-/* iOS safe area fix */
+/* iOS safe areas */
 @supports (padding-bottom: env(safe-area-inset-bottom)) {
   .bottom-nav { padding-bottom: var(--safe-bottom); }
 }
 
 input, button { font-family: inherit; }
-button { cursor: pointer; border: none; background: none; color: inherit; }
+button { cursor: pointer; border: none; background: none; color: inherit; -webkit-tap-highlight-color: transparent; }
 a { color: inherit; text-decoration: none; }
+img { pointer-events: none; }
+
+/* Mobile touch optimizations */
+@media (hover: none) and (pointer: coarse) {
+  button { min-height: 44px; min-width: 44px; }
+  input { font-size: 16px !important; } /* prevents iOS zoom */
+}
+
+/* Responsive type */
+@media (max-width: 380px) {
+  :root { font-size: 14px; }
+}
