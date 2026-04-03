@@ -140,7 +140,7 @@ export default function GuessGamePage({ allSongs }) {
     <div style={{ height: '100%', overflowY: 'auto', paddingBottom: 100 }}>
       {/* Header */}
       <div style={{
-        padding: '48px 24px 16px', textAlign: 'center',
+        padding: 'max(48px, calc(env(safe-area-inset-top, 20px) + 16px)) 24px 16px', textAlign: 'center',
         background: 'linear-gradient(180deg, rgba(255,165,0,0.2) 0%, var(--bg) 100%)',
       }}>
         <h1 style={{ fontSize: 28, fontWeight: 700, margin: 0 }}>Guess the Song 🎮</h1>

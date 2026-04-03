@@ -28,7 +28,7 @@ export default function PlaylistPage() {
   return (
     <div style={{ height: '100%', overflowY: 'auto', paddingBottom: 100 }}>
       {/* Header */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '48px 16px 16px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: 'max(48px, calc(env(safe-area-inset-top, 20px) + 16px)) 16px 16px' }}>
         <h1 style={{ fontSize: 24, fontWeight: 700, margin: 0 }}>Your Playlists</h1>
         <button
           onClick={() => setShowCreate(true)}

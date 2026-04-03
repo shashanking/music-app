@@ -19,7 +19,7 @@ export default function SearchPage({ searchResults, searching, searchSongs }) {
   return (
     <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
       {/* Search input */}
-      <div style={{ padding: '48px 16px 8px' }}>
+      <div style={{ padding: 'max(48px, calc(env(safe-area-inset-top, 20px) + 16px)) 16px 8px' }}>
         <div style={{
           display: 'flex', alignItems: 'center', background: 'var(--surface-light)',
           borderRadius: 12, padding: '0 14px', gap: 10,

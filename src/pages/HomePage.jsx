@@ -110,7 +110,7 @@ export default function HomePage({ categories, allSongs, loading, error, retry }
 
       {/* ═══ HERO ═══ */}
       <div style={{
-        position: 'relative', padding: '56px 24px 28px', overflow: 'hidden',
+        position: 'relative', padding: 'max(56px, calc(env(safe-area-inset-top, 20px) + 20px)) 24px 28px', overflow: 'hidden',
       }}>
         {/* Animated gradient bg */}
         <div style={{

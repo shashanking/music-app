@@ -19,7 +19,7 @@ export default function Visualizer() {
   return (
     <div style={{ height: '100%', display: 'flex', flexDirection: 'column', background: '#000' }}>
       {!fullscreen && (
-        <div style={{ padding: '48px 16px 4px', textAlign: 'center', position: 'relative', zIndex: 1 }}>
+        <div style={{ padding: 'max(48px, calc(env(safe-area-inset-top, 20px) + 16px)) 16px 4px', textAlign: 'center', position: 'relative', zIndex: 1 }}>
           <h1 style={{ fontSize: 20, fontWeight: 700, margin: 0 }}>Visualizer</h1>
           <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 12, margin: '2px 0 0' }}>
             {currentSong ? `${currentSong.title} — ${currentSong.artist}` : 'Play a song to begin'}

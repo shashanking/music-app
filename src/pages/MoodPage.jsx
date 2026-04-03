@@ -87,7 +87,7 @@ export default function MoodPage({ allSongs }) {
     <div style={{ height: '100%', overflowY: 'auto', paddingBottom: 100 }}>
       {/* Header */}
       <div style={{
-        padding: '48px 24px 24px',
+        padding: 'max(48px, calc(env(safe-area-inset-top, 20px) + 16px)) 24px 24px',
         background: activeMoodData
           ? `${activeMoodData.gradient.replace('linear-gradient(135deg,', 'linear-gradient(180deg,').replace(')', ', transparent)')}`
           : 'linear-gradient(180deg, rgba(29,185,84,0.2) 0%, var(--bg) 100%)',
